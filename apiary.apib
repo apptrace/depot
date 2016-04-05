@@ -1,0 +1,100 @@
+FORMAT: 1A
+HOST: http://polls.apiblueprint.org/
+
+# Depot API
+
+Depot API is a rather simple API to retrieve traces and their spans
+
+## Traces Collection [/traces]
+
+### List All Traces [GET]
+
++ Response 200 (application/json)
+
+        [
+           {
+              "id":"521dcdf0-cf65-440f-83e1-8d5041a489cb",
+              "description":"Simple web-service that queries database",
+              "spans":[
+                 {
+                    "id":0,
+                    "parent_id":-1,
+                    "description":"Call to MySQL",
+                    "unix_timestamp":1456822341,
+                    "duration_ms":1000
+                 },
+                 {
+                    "id":1,
+                    "parent_id":0,
+                    "description":"Processing data fetched from MySQL",
+                    "unix_timestamp":1456823350,
+                    "duration_ms":100
+                 }
+              ]
+           },
+           {
+              "id":"06b7d54f-319d-43a2-98aa-3d2f2b10c783",
+              "description":"Example of call that has no spans yet",
+              "spans":[
+        
+              ]
+           },
+           {
+              "id":"be5f9232-bf8e-4d12-b70f-fe075bb9b6a6",
+              "description":"Trace of jenkins job",
+              "spans":[
+                 {
+                    "id":0,
+                    "parent_id":-1,
+                    "description":"Git checkout",
+                    "unix_timestamp":1456822341,
+                    "duration_ms":20000
+                 },
+                 {
+                    "id":1,
+                    "parent_id":0,
+                    "description":"MVN clean + test",
+                    "unix_timestamp":1456822361,
+                    "duration_ms":50182
+                 },
+                 {
+                    "id":2,
+                    "parent_id":1,
+                    "description":"MVN deploy",
+                    "unix_timestamp":1456874361,
+                    "duration_ms":15800
+                 }
+              ]
+           }
+        ]
+        
+## Trace [/traces/{trace_id}]
+
++ Parameters
+    + trace_id (number) - ID of trace to fetch
+
+### Get particular trace  [GET]
+
++ Response 200 (application/json)
+
+        [
+            {
+                "id": "521dcdf0-cf65-440f-83e1-8d5041a489cb",
+                "spans": [
+                    {
+                        "id": 0,
+                        "parent_id": -1,
+                        "description": "Call to MySQL",
+                        "unix_timestamp": 1456822341,
+                        "duration_ms": 1000
+                    },
+                    {
+                        "id": 1,
+                        "parent_id": 0,
+                        "description": "Processing data fetched from MySQL",
+                        "unix_timestamp": 1456823350,
+                        "duration_ms": 100
+                    }
+                ]
+            }
+        ]
